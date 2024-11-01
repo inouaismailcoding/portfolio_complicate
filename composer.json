@@ -1,0 +1,18 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Router\\": "routes/",
+            "Core\\": "core/",
+            "Config\\": "config/",
+            "User\\": "user/",
+            "PhpOffice\\":"PhpOffice",
+            "PHPMailer\\":"PHPMailer",
+            "Dompdf\\":"Dompdf",
+            "App\\":"App"
+
+        }
+    },
+    "require": {
+        "ipinfo/ipinfo": "^3.1"
+    }
+}
