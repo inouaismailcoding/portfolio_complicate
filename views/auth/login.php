@@ -16,6 +16,7 @@
 
 <div class="form-connect" class="container w-auto" style="width: 50%;">
     <form action="<?='/'.HTDOCS.'/login/'; ?>" method="POST">
+        <?= $params['csrf_token']  ; ?>
         <div class="form-group mb-2">
             <label for="username">Username</label>
             <input type="text" class="form-control" name="username" id="username">

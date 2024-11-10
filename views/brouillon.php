@@ -1,82 +1,144 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-  <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-
-  <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet">
-
-  <!-- =======================================================
-  * Template Name: BizPage
-  * Template URL: https://bootstrapmade.com/bizpage-bootstrap-business-template/
-  * Updated: Aug 07 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="index-page">
-<!-- NAVRBAR -->
+<style>* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
 
- <?php include ASSETS.DIRECTORY_SEPARATOR."navbar.php"; ?> 
-   
-    
-    <?php include ASSETS.DIRECTORY_SEPARATOR."footer.php"; ?>
+body {
+    display: flex;
+    height: 100vh;
+    margin: 0;
+}
+
+.dashboard-wrapper {
+    display: flex;
+    width: 100%;
+}
+
+.navbar {
+    background-color: #333;
+    color: #fff;
+    width: 250px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.navbar-header h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.navbar-menu {
+    list-style: none;
+    padding: 0;
+}
+
+.navbar-menu li {
+    margin: 10px 0;
+}
+
+.navbar-menu a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.navbar-menu a:hover {
+    background-color: #575757;
+}
+
+.logout-button {
+    text-align: center;
+}
+
+.logout-button button {
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-button button:hover {
+    background-color: #c9302c;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+</style>
+<body>
+    <!-- Wrapper pour tout le contenu du dashboard -->
+    <div class="dashboard-wrapper">
+        <!-- Menu de navigation -->
+        <nav class="navbar">
+            <div class="navbar-header">
+                <h2>Mon Dashboard</h2>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="#home" onclick="loadPage('home')">Accueil</a></li>
+                <li><a href="#articles" onclick="loadPage('articles')">Articles</a></li>
+                <li><a href="#services" onclick="loadPage('services')">Services</a></li>
+                <li><a href="#team" onclick="loadPage('team')">Équipe</a></li>
+                <li><a href="#testimonials" onclick="loadPage('testimonials')">Témoignages</a></li>
+            </ul>
+            <div class="logout-button">
+                <button onclick="logout()">Se Déconnecter</button>
+            </div>
+        </nav>
+
+        <!-- Contenu principal -->
+        <div class="main-content" id="main-content">
+            <h1>Bienvenue sur le Dashboard</h1>
+            <p>Sélectionnez une option dans le menu pour commencer.</p>
+        </div>
     </div>
- 
 
-    <!-- ON CREE UN SCRIPT JS -->
+    <script src="script.js"></script>
     <script>
-        let table=$('#table-Admin-Post')
-       if($('#table-Admin-Post'))
-       {
-        $(function(){
-            table.dataTable({
-                dom:'fltrip',
-                "order":[[0,"desc"]],
-                "paging": true,
-                "scrolly":200,
-                "pageLength":3,
-                "lengthMenu":[5,10,15,20,25,30],
-                "pagingType":"simple_numbers"
-            });
-        });
-       }
+        // Fonction pour charger les pages de contenu
+function loadPage(page) {
+    const content = document.getElementById('main-content');
+    content.innerHTML = `<h1>${page.charAt(0).toUpperCase() + page.slice(1)}</h1><p>Contenu de la page ${page}.</p>`;
+}
+
+// Fonction de déconnexion
+function logout() {
+    // Logique de déconnexion (par exemple, suppression de session)
+    alert("Déconnexion réussie !");
+    window.location.href = "login.php"; // Redirige vers la page de connexion
+}
+
+// Vérification de l'accès en fonction du rôle
+document.addEventListener("DOMContentLoaded", function () {
+    // Supposons que le rôle soit stocké dans une variable de session (remplacez par votre logique)
+    const userRole = "admin"; // Exemple : récupérer ce rôle de votre backend
+
+    if (userRole !== "admin") {
+        alert("Accès refusé : Vous n'êtes pas autorisé à accéder à cette page.");
+        window.location.href = "login.php"; // Redirige vers la page de connexion
+    }
+});
+
     </script>
-
-    <script src="<?= SCRIPTS.'js'.DIRECTORY_SEPARATOR.'jquery.js' ;?>"></script>
-
-    <script src="<?= SCRIPTS.'js'.DIRECTORY_SEPARATOR.'datatables.min.js' ;?>"></script>
-    <script src="<?= SCRIPTS.'js/script.js' ;?>"></script>
- <!-- Vendor JS Files -->
- <script src="<?= ASSETS.'vendor'.DIRECTORY_SEPARATOR.'bootstrap'.DIRECTORY_SEPARATOR.'js'.DIRECTORY_SEPARATOR.'bootstrap.bundle.min.js' ;?>"></script>
-  <script src="<?= ASSETS.'vendor'.DIRECTORY_SEPARATOR.'php-email-form'.DIRECTORY_SEPARATOR.'validate.js' ;?>"></script>
-  <script src="<?= ASSETS.'vendor'.DIRECTORY_SEPARATOR.'aos'.DIRECTORY_SEPARATOR.'aos.js' ;?>"></script>
-  <script src="<?= ASSETS.'vendor'.DIRECTORY_SEPARATOR.'purecounter'.DIRECTORY_SEPARATOR.'purecounter_vanilla.js ';?>"></script>
-  <script src="<?= ASSETS.'vendor'.DIRECTORY_SEPARATOR.'glightbox'.DIRECTORY_SEPARATOR.'js'.DIRECTORY_SEPARATOR.'glightbox.min.js' ;?>"></script>
-  <script src="<?= ASSETS.'vendor'.DIRECTORY_SEPARATOR.'imagesloaded'.DIRECTORY_SEPARATOR.'imagesloaded.pkgd.min.js' ;?>"></script>
-  <script src="<?= ASSETS.'vendor'.DIRECTORY_SEPARATOR.'isotope-layout'.DIRECTORY_SEPARATOR.'isotope.pkgd.min.js' ;?>"></script>
-  <script src="<?= ASSETS .'vendor'.DIRECTORY_SEPARATOR.'swiper'.DIRECTORY_SEPARATOR.'swiper-bundle.min.js' ;?>"></script>
-   <!-- Main JS File -->
-   <script src="<?= ASSETS.'js'.DIRECTORY_SEPARATOR.'main.js' ;?>"></script>
-
 </body>
 </html>

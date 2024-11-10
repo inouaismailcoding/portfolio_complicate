@@ -137,14 +137,20 @@ class Model
     public function get($table,$id) {
         return $this->executeQuery("SELECT * FROM {$table} WHERE id={$id}")->data;
     }
-    // Méthode pour récupérer les lignes d'une table
+    // Méthode pour supprimer les lignes d'une table
     public function destroy_row($table,$id) {
         return $this->executeQuery("DELETE FROM {$table} WHERE id=:id",['id'=>$id])->data;
     }
+    // Méthode pour supprimer les lignes d'une table
+    public function delete_row($table,$id) {
+        return $this->executeQuery("DELETE FROM {$table} WHERE id=:id",['id'=>$id]);
+    }
 
     // Méthode pour récupérer les lignes d'une table
-    public function update_row($table,$id) {
-        return $this->executeQuery("DELETE FROM {$table} WHERE id=:id",['id'=>$id])->data;
+    public function update_row($table,$id,array $data,?array $files=null) {
+        $data['id']=htmlspecialchars($id);
+        $query=$this->buildUpdateQuery($table,$data);
+        return $this->executeSaveQuery($query,$table);
     }
     
         // Enregistrer une transaction avec action

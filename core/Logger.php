@@ -23,13 +23,13 @@ class Logger {
     // Enregistrer une erreur dans le fichier de logs
     public function logError($errorMessage) {
         $logMessage = "[" . date('Y-m-d H:i:s') . "] ERROR: " . $errorMessage . PHP_EOL;
-        file_put_contents($this->logFile, $logMessage, FILE_APPEND);
+        //file_put_contents($this->logFile, $logMessage, FILE_APPEND);
     }
 
     // Enregistrer une requête SQL dans le fichier de logs
     public function logSQLQuery($sqlQuery) {
         $logMessage = "[" . date('Y-m-d H:i:s') . "] SQL QUERY: " . $sqlQuery . PHP_EOL;
-        file_put_contents($this->sqlLogFile, $logMessage, FILE_APPEND);
+        //file_put_contents($this->sqlLogFile, $logMessage, FILE_APPEND);
     }
 }
 

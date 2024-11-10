@@ -2,7 +2,8 @@
 
 <div class="form-connect" class="container w-auto" style="width: 50%;">
     <form action="<?= '/'.HTDOCS.'/signUp/'?>" method="post">
-       
+    <?= $params['csrf_token']  ; ?>
+
         <div class="form-group mb-2">
             <label for="username">Username</label>
             <input type="text" class="form-control" name="username" id="username">
@@ -17,7 +18,7 @@
         </div>
         <button type="submit" class="btn btn-primary mt-1 mb-2">S'inscrire</button>
         <div class="text-decoration-none text-center">
-        <small >si disposer déja d'un compte <a href="<?= '/'.HTDOCS.'login/'?>">cliquer Ici</a></small>
+        <small >si disposer déja d'un compte <a href="<?= '/'.HTDOCS.'/login/'?>">cliquer Ici</a></small>
         </div>
     </form>
 </div>

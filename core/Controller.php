@@ -26,16 +26,22 @@ class Controller
     {
         // On commence par lancer le systeme de bevery 
         // les fonction de rappelle 
+        $links=['dashboard','login','signup'];
+
         ob_start();
         // on remplace les . par les directory_separator /
         $path = str_replace('.', DIRECTORY_SEPARATOR, $path);
-        
         ob_clean();
         require VIEWS . $path . ".php";
         // On gere les vue qui ont un id en parametre
 
         $contents = ob_get_clean();
-        require VIEWS . "layout.php";
+        if (in_array($path,$links)) {
+            require VIEWS . $path . ".php";
+
+        }else{
+            require VIEWS . "layout.php";
+        }
     }
     public function getDB()
     {
@@ -45,11 +51,12 @@ class Controller
     {
         // On verifie si l'utilisateur est connecté ici il faudrait mettre ici les conditions de connexion
         if(isset($_SESSION['auth']) && $_SESSION['auth']==1){return true;}
-        else{return header('location:'.HTDOCS.'/login');}
+        else{return header('location:/'.HTDOCS.'/login');}
     }
     protected function isAdmin()
     {
         if($_SESSION['auth']==true){echo $_SESSION['role'];  }
+        else{echo "C'est un user pas Admin";}
     }
 
     

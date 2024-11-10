@@ -5,6 +5,7 @@ use User\validation\validator;
 use User\models\user;
 use Core\Controller;
 use Core\Logger;
+use Core\CSRFProtection;
 use stdClass;
 
 class UserController extends Controller
@@ -15,12 +16,20 @@ class UserController extends Controller
 
     public function signUp()
     {
-        return $this->view('/auth/signUp');
+        $token=new  CSRFProtection();
+        $csrf_token=$token->csrf_token();
+        return $this->view('/auth/signUp',compact('csrf_token'));
     }
 
     public function signUpPost()
     {
-        $user=new user($this->getDB());
+        $csrf=new  CSRFProtection();
+        $token = $_POST['csrf_token'] ?? '';
+
+        if (!$csrf->verifyToken($token)) {
+            die("Erreur : Le token CSRF est invalide ou a expiré.");
+        }else{
+            $user=new user($this->getDB());
        
         $result=$user->create($_POST);
         if($result){
@@ -29,6 +38,53 @@ class UserController extends Controller
            $views="/".HTDOCS."?success=true";
            return header("location: {$views}");
         }
+        }
+
+        
+    }
+
+    public function login()
+    {
+        //$csrf_token=$_SESSION['csrf_token_input'];
+        $token=new CSRFProtection();
+        $csrf_token=$token->csrf_token();
+        return $this->view('/auth/login',compact('csrf_token'));
+    }
+
+    
+    public function loginPost(){
+      
+            $validator=new validator($_POST);
+        $errors=$validator->validate([
+            'username' => ['required','min:4'],
+            'password' => ['required','min:4']
+        ]); 
+        if($errors)
+        {
+          
+            $_SESSION['errors'][]=$errors;
+           // $views=VIEWS."/admin/posts?success=true";
+            header('location: /'.HTDOCS.'/login');
+            exit;
+        }
+        $myUser= new user($this->getDB());
+        $user=$myUser->getByUsername($_POST['username']);
+        
+        // On verifie le mot de passe
+        if(password_verify(htmlspecialchars($_POST['password']),$user->password))
+        {
+            // On ajoute les informations des seesions
+            $this->setSessionInfo($user);
+            // On enregistre les informations de lutilisateur dans la table users_logins
+            $myUser->recordLogin($user->id);
+
+           // On redirige vers la page des post
+           $views='/'.HTDOCS.'?success=true';
+           return header("location:{$views}");
+
+        }else{ header('location:/'.HTDOCS.'/login');}
+        
+        
     }
 
     public function createUser()
@@ -104,46 +160,8 @@ class UserController extends Controller
         }
 
     }
-    public function login()
-    {
-        return $this->view('/auth/login');
-    }
-
     public function loginStaff(){ 
         return $this->view('/admin/loginStaff');
-    }
-
-    public function loginPost(){
-        $validator=new validator($_POST);
-        $errors=$validator->validate([
-            'username' => ['required','min:4'],
-            'password' => ['required','min:4']
-        ]); 
-        if($errors)
-        {
-          
-            $_SESSION['errors'][]=$errors;
-           // $views=VIEWS."/admin/posts?success=true";
-            header('location: /'.HTDOCS.'/login');
-            exit;
-        }
-        $myUser= new user($this->getDB());
-        $user=$myUser->getByUsername($_POST['username']);
-        
-        // On verifie le mot de passe
-        if(password_verify(htmlspecialchars($_POST['password']),$user->password))
-        {
-            echo "reussi";
-            // On ajoute les informations des seesions
-            $this->setSessionInfo($user);
-            // On enregistre les informations de lutilisateur dans la table users_logins
-            $myUser->recordLogin($user->id);
-
-           // On redirige vers la page des post
-           $views='/'.HTDOCS.'?success=true';
-           return header("location:{$views}");
-
-        }else{ header('location:/'.HTDOCS.'/login');}
     }
 
     public function setSessionInfo(stdClass $user){
@@ -168,7 +186,6 @@ class UserController extends Controller
         if($errors)
         {
             $_SESSION['errors'][]=$errors;
-           // $views=VIEWS."/admin/posts?success=true";
             header('location: /'.HTDOCS.'/admin');
             exit;
         }
@@ -195,6 +212,13 @@ class UserController extends Controller
         session_unset();
         session_destroy();
         return header('location:/'.HTDOCS.'/');
+    }
+
+    public function dashboard()
+    {
+        $user=new user($this->getDB());
+        $users=$user->all();
+        return $this->view('dashboard',compact('users'));
     }
 }
 

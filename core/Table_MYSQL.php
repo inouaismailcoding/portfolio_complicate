@@ -42,6 +42,8 @@ class Table_MYSQL  { //extends Mysql_DB
         return $null === "NO" ? "required" : "";
     }
 
+     
+
     public function get($id) {
         return $this->DB->get($this->table, $id);
     }

@@ -37,7 +37,6 @@
 </head>
 <body class="index-page">
 <!-- NAVRBAR -->
-<?= SCRIPTS.'vendor'.DIRECTORY_SEPARATOR.'swiper'.DIRECTORY_SEPARATOR.'swiper-bundle.min.css' ; ?>
  <?php include ASSETS.DIRECTORY_SEPARATOR."navbar.php"; ?> 
    
  <?= $contents; ?>

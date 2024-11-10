@@ -51,6 +51,10 @@ class MYSQL_DB
         }
     }
 
+    public function lastInsertRow(){
+        return $this->conn->lastInsertId();
+    }
+
     public function executeQuery(string $sql,array $params=null,bool $single=null)
     {
         $method=is_null($params) ? 'query':'prepare';
